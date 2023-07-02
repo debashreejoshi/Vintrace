@@ -7,10 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B81036602A4EBC2C009CD1A9 /* WineModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B810365F2A4EBC2C009CD1A9 /* WineModel.swift */; };
+		B81036622A4EC1C9009CD1A9 /* LevelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B81036612A4EC1C9009CD1A9 /* LevelTableViewCell.swift */; };
+		B81036642A4EC1E1009CD1A9 /* ComponentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B81036632A4EC1E1009CD1A9 /* ComponentTableViewCell.swift */; };
+		B81036662A4EC7F0009CD1A9 /* WineItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B81036652A4EC7F0009CD1A9 /* WineItemViewModel.swift */; };
+		B810366E2A4ECF61009CD1A9 /* stock-item-1.json in Resources */ = {isa = PBXBuildFile; fileRef = B810366D2A4ECF61009CD1A9 /* stock-item-1.json */; };
 		B88AE5212A4E6486005C996A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88AE5202A4E6486005C996A /* AppDelegate.swift */; };
 		B88AE5232A4E6486005C996A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88AE5222A4E6486005C996A /* SceneDelegate.swift */; };
-		B88AE5252A4E6486005C996A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88AE5242A4E6486005C996A /* ViewController.swift */; };
-		B88AE5282A4E6486005C996A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B88AE5262A4E6486005C996A /* Main.storyboard */; };
+		B88AE5252A4E6486005C996A /* WineItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88AE5242A4E6486005C996A /* WineItemViewController.swift */; };
+		B88AE5282A4E6486005C996A /* WineItem.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B88AE5262A4E6486005C996A /* WineItem.storyboard */; };
 		B88AE52A2A4E6487005C996A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B88AE5292A4E6487005C996A /* Assets.xcassets */; };
 		B88AE52D2A4E6487005C996A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B88AE52B2A4E6487005C996A /* LaunchScreen.storyboard */; };
 		B88AE5382A4E6487005C996A /* VintraceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88AE5372A4E6487005C996A /* VintraceTests.swift */; };
@@ -36,11 +41,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B810365F2A4EBC2C009CD1A9 /* WineModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WineModel.swift; sourceTree = "<group>"; };
+		B81036612A4EC1C9009CD1A9 /* LevelTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelTableViewCell.swift; sourceTree = "<group>"; };
+		B81036632A4EC1E1009CD1A9 /* ComponentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComponentTableViewCell.swift; sourceTree = "<group>"; };
+		B81036652A4EC7F0009CD1A9 /* WineItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WineItemViewModel.swift; sourceTree = "<group>"; };
+		B810366D2A4ECF61009CD1A9 /* stock-item-1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "stock-item-1.json"; sourceTree = "<group>"; };
 		B88AE51D2A4E6486005C996A /* Vintrace.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Vintrace.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B88AE5202A4E6486005C996A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B88AE5222A4E6486005C996A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		B88AE5242A4E6486005C996A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		B88AE5272A4E6486005C996A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B88AE5242A4E6486005C996A /* WineItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WineItemViewController.swift; sourceTree = "<group>"; };
+		B88AE5272A4E6486005C996A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/WineItem.storyboard; sourceTree = "<group>"; };
 		B88AE5292A4E6487005C996A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B88AE52C2A4E6487005C996A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B88AE52E2A4E6487005C996A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -76,6 +86,46 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B81036672A4ECBB3009CD1A9 /* WineCell */ = {
+			isa = PBXGroup;
+			children = (
+				B81036632A4EC1E1009CD1A9 /* ComponentTableViewCell.swift */,
+				B81036612A4EC1C9009CD1A9 /* LevelTableViewCell.swift */,
+			);
+			path = WineCell;
+			sourceTree = "<group>";
+		};
+		B81036682A4ECE0B009CD1A9 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				B88AE52B2A4E6487005C996A /* LaunchScreen.storyboard */,
+				B88AE5292A4E6487005C996A /* Assets.xcassets */,
+				B88AE5202A4E6486005C996A /* AppDelegate.swift */,
+				B88AE5222A4E6486005C996A /* SceneDelegate.swift */,
+				B810366D2A4ECF61009CD1A9 /* stock-item-1.json */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		B81036692A4ECE54009CD1A9 /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				B810366A2A4ECE67009CD1A9 /* Wine */,
+			);
+			path = Module;
+			sourceTree = "<group>";
+		};
+		B810366A2A4ECE67009CD1A9 /* Wine */ = {
+			isa = PBXGroup;
+			children = (
+				B88AE5242A4E6486005C996A /* WineItemViewController.swift */,
+				B81036652A4EC7F0009CD1A9 /* WineItemViewModel.swift */,
+				B88AE5262A4E6486005C996A /* WineItem.storyboard */,
+				B81036672A4ECBB3009CD1A9 /* WineCell */,
+			);
+			path = Wine;
+			sourceTree = "<group>";
+		};
 		B88AE5142A4E6486005C996A = {
 			isa = PBXGroup;
 			children = (
@@ -99,12 +149,9 @@
 		B88AE51F2A4E6486005C996A /* Vintrace */ = {
 			isa = PBXGroup;
 			children = (
-				B88AE5202A4E6486005C996A /* AppDelegate.swift */,
-				B88AE5222A4E6486005C996A /* SceneDelegate.swift */,
-				B88AE5242A4E6486005C996A /* ViewController.swift */,
-				B88AE5262A4E6486005C996A /* Main.storyboard */,
-				B88AE5292A4E6487005C996A /* Assets.xcassets */,
-				B88AE52B2A4E6487005C996A /* LaunchScreen.storyboard */,
+				B81036682A4ECE0B009CD1A9 /* Core */,
+				B81036692A4ECE54009CD1A9 /* Module */,
+				B88AE5502A4E9C29005C996A /* Model */,
 				B88AE52E2A4E6487005C996A /* Info.plist */,
 			);
 			path = Vintrace;
@@ -125,6 +172,14 @@
 				B88AE5432A4E6488005C996A /* VintraceUITestsLaunchTests.swift */,
 			);
 			path = VintraceUITests;
+			sourceTree = "<group>";
+		};
+		B88AE5502A4E9C29005C996A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B810365F2A4EBC2C009CD1A9 /* WineModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,7 +288,8 @@
 			files = (
 				B88AE52D2A4E6487005C996A /* LaunchScreen.storyboard in Resources */,
 				B88AE52A2A4E6487005C996A /* Assets.xcassets in Resources */,
-				B88AE5282A4E6486005C996A /* Main.storyboard in Resources */,
+				B88AE5282A4E6486005C996A /* WineItem.storyboard in Resources */,
+				B810366E2A4ECF61009CD1A9 /* stock-item-1.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,9 +314,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B88AE5252A4E6486005C996A /* ViewController.swift in Sources */,
+				B88AE5252A4E6486005C996A /* WineItemViewController.swift in Sources */,
+				B81036662A4EC7F0009CD1A9 /* WineItemViewModel.swift in Sources */,
 				B88AE5212A4E6486005C996A /* AppDelegate.swift in Sources */,
+				B81036622A4EC1C9009CD1A9 /* LevelTableViewCell.swift in Sources */,
+				B81036602A4EBC2C009CD1A9 /* WineModel.swift in Sources */,
 				B88AE5232A4E6486005C996A /* SceneDelegate.swift in Sources */,
+				B81036642A4EC1E1009CD1A9 /* ComponentTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -297,12 +357,12 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		B88AE5262A4E6486005C996A /* Main.storyboard */ = {
+		B88AE5262A4E6486005C996A /* WineItem.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				B88AE5272A4E6486005C996A /* Base */,
 			);
-			name = Main.storyboard;
+			name = WineItem.storyboard;
 			sourceTree = "<group>";
 		};
 		B88AE52B2A4E6487005C996A /* LaunchScreen.storyboard */ = {
@@ -442,7 +502,7 @@
 				INFOPLIST_FILE = Vintrace/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = WineItem;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -470,7 +530,7 @@
 				INFOPLIST_FILE = Vintrace/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = WineItem;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
