@@ -18,15 +18,13 @@ class WineItemViewController: UIViewController {
     @IBOutlet weak var ownerNameLabel: UILabel!
     @IBOutlet weak var unitNameLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
-    
     @IBOutlet weak var headerView: UIView!
-    var shouldShowHeader: Bool = true
     @IBOutlet weak var headerHeightConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var backBarButton: UIBarButtonItem!
-    
     @IBOutlet weak var moreBarButton: UIBarButtonItem!
     @IBOutlet weak var editBarButton: UIBarButtonItem!
+    
+    var shouldShowHeader: Bool = true
     
     private let viewModel = WineItemViewModel()
     
@@ -37,8 +35,7 @@ class WineItemViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.bindViewModel()
-        viewModel.fetchData(completion: handleFetchResult)
+        self.viewModel.fetchData(completion: handleFetchResult)
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
         
@@ -70,18 +67,6 @@ class WineItemViewController: UIViewController {
         self.backBarButton.image = shouldShowHeader ? UIImage(named: "BACK") : UIImage(named: "back_clear")
         self.moreBarButton.image = shouldShowHeader ? UIImage(named: "MORE") : UIImage(named: "more_clear")
         self.editBarButton.image = shouldShowHeader ? UIImage(named: "EDIT") : UIImage(named: "edit_clear")
-    }
-    
-    private func bindViewModel() {
-        viewModel.onUpdate = { [weak self] wineModel in
-            guard let wineModel = wineModel else {
-                return
-            }
-            DispatchQueue.main.async {
-                self?.tableView.reloadData()
-                self?.updateUI(with: wineModel)
-            }
-        }
     }
     
     private func handleFetchResult(_ result: Result<WineModel, Error>) {

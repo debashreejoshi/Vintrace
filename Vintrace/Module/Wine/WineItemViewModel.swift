@@ -11,10 +11,7 @@ class WineItemViewModel {
     
     var wineModelItem: WineModel?
     private var componentsCount: Int = 0
-    
-    // Closure-based data binding for updates
-    var onUpdate: ((WineModel?) -> Void)?
-    
+        
     // Fetch the JSON data and parse it into StockItem objects
     func fetchData(completion: @escaping (Result<WineModel, Error>) -> Void) {
         guard let jsonData = readJSONFromFile() else {
@@ -27,7 +24,6 @@ class WineItemViewModel {
             let decodedData = try decoder.decode(WineModel.self, from: jsonData)
             wineModelItem = decodedData
             self.componentsCount = wineModelItem?.components.count ?? 0
-            onUpdate?(wineModelItem) // Notify the view controller about the data update
             completion(.success(decodedData))
         } catch {
             completion(.failure(error))
@@ -47,7 +43,6 @@ class WineItemViewModel {
         }
         return nil
     }
-    
 }
 
 // Enum representing the sections
