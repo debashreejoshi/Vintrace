@@ -35,6 +35,7 @@ class WineItemViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.backgroundColor = UIColor(hex: "#F7F7F7")
         self.viewModel.fetchData(completion: handleFetchResult)
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
@@ -190,7 +191,7 @@ extension WineItemViewController: UITableViewDelegate {
     
     private func configureHeaderView(for section: Section) -> UIView {
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 40))
-        headerView.backgroundColor = .lightGray
+        headerView.backgroundColor = UIColor(hex: "#F7F7F7")
         
         let titleLabel = UILabel(frame: CGRect(x: 16, y: 0, width: 200, height: 40))
         titleLabel.text = section == .levels ? "Levels" : "Components"
