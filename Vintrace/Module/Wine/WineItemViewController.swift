@@ -9,6 +9,8 @@ import UIKit
 
 class WineItemViewController: UIViewController {
     
+    @IBOutlet weak var pageControl: UIPageControl!
+    @IBOutlet weak var carouselView: UIView!
     @IBOutlet weak var wineImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
@@ -28,6 +30,10 @@ class WineItemViewController: UIViewController {
     
     private let viewModel = WineItemViewModel()
     
+    let imageNames = ["wine-1", "wine-2", "wine-3", "wine-4"]
+    // Create an empty array to store the images
+    var images: [UIImage] = []
+    
     private enum Constant {
         static let minHeaderHeight: CGFloat = 90
         static let maxHeaderHeight: CGFloat = 574
@@ -44,6 +50,16 @@ class WineItemViewController: UIViewController {
         
         let tapGestureRecognizer = UITapGestureRecognizer(target:self, action: #selector(Self.somethingWasTapped(_:)))
         self.navigationController?.navigationBar.addGestureRecognizer(tapGestureRecognizer)
+        
+        // Iterate over the image names and create UIImage objects
+        for imageName in imageNames {
+            if let image = UIImage(named: imageName) {
+                images.append(image)
+            }
+        }
+        
+        // Call the method to setup the carousel with the images
+        setupCarousel()
     }
     
     @objc func somethingWasTapped(_ sth: AnyObject){
@@ -107,6 +123,32 @@ class WineItemViewController: UIViewController {
         self.beverageColoredView.layer.cornerRadius = beverageColoredView.bounds.width/2
         self.beverageColoredView.clipsToBounds = true
         self.beverageColoredView.backgroundColor = UIColor(hex: "#\(wineModel.beverageProperties.colour)")
+    }
+    
+    // Method to setup the carousel with images
+    private func setupCarousel() {
+        let carouselView = UIScrollView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 200))
+        carouselView.isPagingEnabled = true
+        carouselView.showsHorizontalScrollIndicator = false
+        carouselView.contentSize = CGSize(width: tableView.frame.width * CGFloat(images.count), height: 200)
+        
+        for (index, image) in images.enumerated() {
+            let imageView = UIImageView(image: image)
+            imageView.contentMode = .scaleAspectFill
+            imageView.frame = CGRect(x: tableView.frame.width * CGFloat(index), y: 0, width: tableView.frame.width, height: 200)
+            carouselView.addSubview(imageView)
+        }
+        
+        tableView.tableHeaderView = carouselView
+        
+        let pageControl = UIPageControl(frame: CGRect(x: 0, y: 180, width: tableView.frame.width, height: 20))
+        pageControl.numberOfPages = images.count
+        pageControl.currentPage = 0
+        pageControl.tintColor = .lightGray
+        pageControl.pageIndicatorTintColor = .gray
+        pageControl.currentPageIndicatorTintColor = .darkGray
+        pageControl.isUserInteractionEnabled = false
+        tableView.addSubview(pageControl)
     }
 }
 

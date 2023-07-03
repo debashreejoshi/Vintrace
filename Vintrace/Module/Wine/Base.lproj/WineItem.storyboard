@@ -27,6 +27,11 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vYb-Qj-afm">
                                                 <rect key="frame" x="0.0" y="0.0" width="454" height="575"/>
                                                 <subviews>
+                                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fpj-H4-8Yb">
+                                                        <rect key="frame" x="8" y="0.0" width="407" height="348"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                    </view>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wine-3" translatesAutoresizingMaskIntoConstraints="NO" id="Opz-Gz-Qla">
                                                         <rect key="frame" x="0.0" y="0.0" width="454" height="348"/>
                                                         <constraints>
@@ -131,6 +136,10 @@
                                                             <constraint firstItem="YuF-KV-puX" firstAttribute="leading" secondItem="Kb4-4B-8ab" secondAttribute="leading" id="vqt-fT-LlH"/>
                                                         </constraints>
                                                     </view>
+                                                    <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="rIm-br-tlh">
+                                                        <rect key="frame" x="102" y="236" width="255" height="26"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    </pageControl>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
@@ -327,12 +336,14 @@
                         <outlet property="backBarButton" destination="ZDk-Da-fy0" id="rOW-aK-KIG"/>
                         <outlet property="beverageColoredView" destination="ZpS-ne-lXe" id="7Bb-OJ-fZS"/>
                         <outlet property="beverageDescriptionLabel" destination="1Wd-vt-cES" id="saW-z1-WNe"/>
+                        <outlet property="carouselView" destination="fpj-H4-8Yb" id="9B2-6P-X6W"/>
                         <outlet property="descriptionLabel" destination="xye-HP-3At" id="EFz-yi-NWJ"/>
                         <outlet property="editBarButton" destination="RAB-hv-cmL" id="YrM-oM-BwJ"/>
                         <outlet property="headerHeightConstraint" destination="MwL-lB-Z0Y" id="gbU-vD-iH2"/>
                         <outlet property="headerView" destination="tVD-Dq-Q9D" id="Ubi-sh-j57"/>
                         <outlet property="moreBarButton" destination="3W5-Up-Mop" id="mRr-dK-6Bl"/>
                         <outlet property="ownerNameLabel" destination="3nC-Ie-ttl" id="zqw-iL-hei"/>
+                        <outlet property="pageControl" destination="rIm-br-tlh" id="k7m-wW-r9R"/>
                         <outlet property="secondaryDescriptionLabel" destination="G6K-2g-tFm" id="9ka-jr-SUg"/>
                         <outlet property="tableView" destination="lZa-EH-5Ov" id="blw-PQ-2jp"/>
                         <outlet property="titleLabel" destination="N6p-FO-Kv7" id="Jc1-EQ-eZO"/>
