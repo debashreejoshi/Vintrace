@@ -16,6 +16,9 @@ class LevelTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+//        quantityView.layer.cornerRadius = 8
+//        quantityView.clipsToBounds = true
+//        quantityView.backgroundColor = .green
     }
     
     func configure(with key: String, value: Int) {
