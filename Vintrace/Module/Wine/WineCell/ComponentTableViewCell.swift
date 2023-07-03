@@ -23,12 +23,14 @@ class ComponentTableViewCell: UITableViewCell {
         super.awakeFromNib()
         
     }
+    
+    
 
     private func configureCell() {
         
         self.componentCodeLabel.text = componentModel?.code
         self.componentDescriptionLabel.text = componentModel?.description
-        self.componentQuantityLabel.text = "\(componentModel?.quantity ?? 0)"
+        self.componentQuantityLabel.text = componentModel?.unitRequired == true ? "\(componentModel?.quantity ?? 0) \(componentModel?.unit?.abbreviation ?? "")" : "\(componentModel?.quantity ?? 0)"
     }
     
     

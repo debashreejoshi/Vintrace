@@ -10,6 +10,7 @@ import Foundation
 class WineItemViewModel {
     
     var wineModelItem: WineModel?
+    var sections: [Section] = []
     private var componentsCount: Int = 0
         
     // Fetch the JSON data and parse it into StockItem objects
@@ -24,6 +25,7 @@ class WineItemViewModel {
             let decodedData = try decoder.decode(WineModel.self, from: jsonData)
             wineModelItem = decodedData
             self.componentsCount = wineModelItem?.components?.count ?? 0
+            sections = componentsCount > 0 ? [.levels, .components] : [.levels]
             completion(.success(decodedData))
         } catch {
             completion(.failure(error))
@@ -33,7 +35,7 @@ class WineItemViewModel {
     
     // Read JSON data from file
     private func readJSONFromFile() -> Data? {
-        if let path = Bundle.main.path(forResource: "stock-item-3", ofType: "json") {
+        if let path = Bundle.main.path(forResource: "stock-item-1", ofType: "json") {
             do {
                 let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
                 return data

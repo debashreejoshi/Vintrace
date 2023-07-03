@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SafariServices
 
 class WineItemViewController: UIViewController {
     
@@ -32,9 +33,10 @@ class WineItemViewController: UIViewController {
     
     private let viewModel = WineItemViewModel()
     
-    let imageNames = ["wine-1", "wine-2", "wine-3", "wine-4"]
+    let imageNames: [String] = ["wine-1", "wine-2", "wine-3", "wine-4"]
     // Create an empty array to store the images
     var images: [UIImage] = []
+    let genericImageName = "generic-1"
     
     private enum Constant {
         static let minHeaderHeight: CGFloat = 90
@@ -45,10 +47,16 @@ class WineItemViewController: UIViewController {
         super.viewDidLoad()
         self.tableView.backgroundColor = UIColor(hex: "#F7F7F7")
         self.viewModel.fetchData(completion: handleFetchResult)
+        self.headerView.layer.cornerRadius = 32
+        self.headerView.clipsToBounds = true
+        self.headerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(Self.somethingWasTapped(_:))))
+        
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
         
         navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance  = appearance
         
         let tapGestureRecognizer = UITapGestureRecognizer(target:self, action: #selector(Self.somethingWasTapped(_:)))
         self.navigationController?.navigationBar.addGestureRecognizer(tapGestureRecognizer)
@@ -56,6 +64,11 @@ class WineItemViewController: UIViewController {
         // Iterate over the image names and create UIImage objects
         for imageName in imageNames {
             if let image = UIImage(named: imageName) {
+                images.append(image)
+            }
+        }
+        if images.isEmpty {
+            if let image = UIImage(named: genericImageName) {
                 images.append(image)
             }
         }
@@ -119,6 +132,7 @@ class WineItemViewController: UIViewController {
         self.titleLabel.text = wineModel.code
         self.descriptionLabel.text = wineModel.description
         self.secondaryDescriptionLabel.text = wineModel.secondaryDescription
+        self.secondaryDescriptionLabel.isHidden = wineModel.secondaryDescription == nil
         self.ownerNameLabel.text = wineModel.owner?.name
         self.unitNameLabel.text = wineModel.unit?.name
         self.configureBeverageProperties(with: wineModel)
@@ -129,7 +143,7 @@ class WineItemViewController: UIViewController {
         if let beverageProperties = self.viewModel.wineModelItem?.beverageProperties {
             self.beverageColoredView.layer.cornerRadius = beverageColoredView.bounds.width/2
             self.beverageColoredView.clipsToBounds = true
-            self.beverageColoredView.backgroundColor = UIColor(hex: "#\(beverageProperties.colour)")
+            self.beverageColoredView.backgroundColor = UIColor(hex: "#\(beverageProperties.colour ?? "")")
             self.beverageDescriptionLabel.text = beverageProperties.description
             self.beverageDescriptionLabel.text = beverageProperties.description
             
@@ -144,35 +158,36 @@ class WineItemViewController: UIViewController {
     
     // Method to setup the carousel with images
     private func setupCarousel() {
-        let carouselView = UIScrollView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 200))
+        let carouselView = UIScrollView(frame: self.carouselView.bounds)
         carouselView.isPagingEnabled = true
         carouselView.showsHorizontalScrollIndicator = false
-        carouselView.contentSize = CGSize(width: tableView.frame.width * CGFloat(images.count), height: 200)
+        carouselView.contentSize = CGSize(width: carouselView.frame.width * CGFloat(images.count), height: carouselView.frame.height)
         
+        let content = UIView(frame: CGRect(origin: .zero, size: CGSize(width: carouselView.frame.width * CGFloat(images.count), height: carouselView.frame.height)))
         for (index, image) in images.enumerated() {
             let imageView = UIImageView(image: image)
             imageView.contentMode = .scaleAspectFill
-            imageView.frame = CGRect(x: tableView.frame.width * CGFloat(index), y: 0, width: tableView.frame.width, height: 200)
-            carouselView.addSubview(imageView)
+            imageView.frame = CGRect(x: carouselView.frame.width * CGFloat(index), y: 0, width: carouselView.frame.width, height: carouselView.frame.height)
+            content.addSubview(imageView)
         }
+        carouselView.addSubview(content)
         
-        tableView.tableHeaderView = carouselView
-        
-        let pageControl = UIPageControl(frame: CGRect(x: 0, y: 180, width: tableView.frame.width, height: 20))
-        pageControl.numberOfPages = images.count
-        pageControl.currentPage = 0
-        pageControl.tintColor = .lightGray
-        pageControl.pageIndicatorTintColor = .gray
-        pageControl.currentPageIndicatorTintColor = .darkGray
-        pageControl.isUserInteractionEnabled = false
-        tableView.addSubview(pageControl)
+        self.carouselView.addSubview(carouselView)
     }
+    
+    
+    @IBAction func moreAction(_ sender: Any) {
+        guard let url = URL(string: "https://www.vintrace.com") else { return }
+        let vc = SFSafariViewController(url: url)
+        self.present(vc, animated: true)
+    }
+    
 }
 
 extension WineItemViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return Section.allSections.count
+        return viewModel.sections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -182,7 +197,7 @@ extension WineItemViewController: UITableViewDataSource {
         
         switch sectionType {
         case .levels:
-            return 4 // Number of rows in the "Levels" section
+            return 4 
         case .components:
             return viewModel.wineModelItem?.components?.count ?? 0
         }
@@ -209,7 +224,7 @@ extension WineItemViewController: UITableViewDataSource {
                 
                 let available = onHand + ordered - committed
                 cell.configure(with: "Available", value: available)
-                cell.quantityNumberLabel.textColor = UIColor(named: "AccentColor")
+                cell.quantityNumberLabel.textColor = available == 0 ? .black : available > 0 ? UIColor(named: "AccentColor") : .red
             default:
                 break
             }
@@ -278,8 +293,10 @@ extension WineItemViewController: UITableViewDelegate {
     @objc private func editButtonTapped() {
         // Handle the edit button tap event for the "Levels" section
         print("Edit button tapped")
+        let alertController = UIAlertController(title: "Edit", message: "this is something", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
+        self.present(alertController, animated: true)
     }
-    
 }
 
 
