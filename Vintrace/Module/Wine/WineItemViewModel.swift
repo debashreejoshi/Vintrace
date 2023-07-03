@@ -23,7 +23,7 @@ class WineItemViewModel {
             let decoder = JSONDecoder()
             let decodedData = try decoder.decode(WineModel.self, from: jsonData)
             wineModelItem = decodedData
-            self.componentsCount = wineModelItem?.components.count ?? 0
+            self.componentsCount = wineModelItem?.components?.count ?? 0
             completion(.success(decodedData))
         } catch {
             completion(.failure(error))
@@ -33,7 +33,7 @@ class WineItemViewModel {
     
     // Read JSON data from file
     private func readJSONFromFile() -> Data? {
-        if let path = Bundle.main.path(forResource: "stock-item-1", ofType: "json") {
+        if let path = Bundle.main.path(forResource: "stock-item-3", ofType: "json") {
             do {
                 let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
                 return data

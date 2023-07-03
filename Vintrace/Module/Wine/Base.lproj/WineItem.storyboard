@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="bc4-1e-8Ib">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -336,6 +337,7 @@
                         <outlet property="backBarButton" destination="ZDk-Da-fy0" id="rOW-aK-KIG"/>
                         <outlet property="beverageColoredView" destination="ZpS-ne-lXe" id="7Bb-OJ-fZS"/>
                         <outlet property="beverageDescriptionLabel" destination="1Wd-vt-cES" id="saW-z1-WNe"/>
+                        <outlet property="beveragePropertiesStackView" destination="YuF-KV-puX" id="EeR-Yl-yWX"/>
                         <outlet property="carouselView" destination="fpj-H4-8Yb" id="9B2-6P-X6W"/>
                         <outlet property="descriptionLabel" destination="xye-HP-3At" id="EFz-yi-NWJ"/>
                         <outlet property="editBarButton" destination="RAB-hv-cmL" id="YrM-oM-BwJ"/>

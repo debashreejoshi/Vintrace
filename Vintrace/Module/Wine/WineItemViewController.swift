@@ -25,6 +25,8 @@ class WineItemViewController: UIViewController {
     @IBOutlet weak var backBarButton: UIBarButtonItem!
     @IBOutlet weak var moreBarButton: UIBarButtonItem!
     @IBOutlet weak var editBarButton: UIBarButtonItem!
+    @IBOutlet weak var beveragePropertiesStackView: UIStackView!
+    
     
     var shouldShowHeader: Bool = true
     
@@ -117,13 +119,28 @@ class WineItemViewController: UIViewController {
         self.titleLabel.text = wineModel.code
         self.descriptionLabel.text = wineModel.description
         self.secondaryDescriptionLabel.text = wineModel.secondaryDescription
-        self.beverageDescriptionLabel.text = wineModel.beverageProperties.description
-        self.ownerNameLabel.text = wineModel.owner.name
-        self.unitNameLabel.text = wineModel.unit.name
-        self.beverageColoredView.layer.cornerRadius = beverageColoredView.bounds.width/2
-        self.beverageColoredView.clipsToBounds = true
-        self.beverageColoredView.backgroundColor = UIColor(hex: "#\(wineModel.beverageProperties.colour)")
+        self.ownerNameLabel.text = wineModel.owner?.name
+        self.unitNameLabel.text = wineModel.unit?.name
+        self.configureBeverageProperties(with: wineModel)
     }
+    
+    private func configureBeverageProperties(with wineModel: WineModel) {
+        
+        if let beverageProperties = self.viewModel.wineModelItem?.beverageProperties {
+            self.beverageColoredView.layer.cornerRadius = beverageColoredView.bounds.width/2
+            self.beverageColoredView.clipsToBounds = true
+            self.beverageColoredView.backgroundColor = UIColor(hex: "#\(beverageProperties.colour)")
+            self.beverageDescriptionLabel.text = beverageProperties.description
+            self.beverageDescriptionLabel.text = beverageProperties.description
+            
+            // Show the stack view
+            beveragePropertiesStackView.isHidden = false
+        } else {
+            // Hide the stack view
+            beveragePropertiesStackView.isHidden = true
+        }
+    }
+    
     
     // Method to setup the carousel with images
     private func setupCarousel() {
@@ -167,7 +184,7 @@ extension WineItemViewController: UITableViewDataSource {
         case .levels:
             return 4 // Number of rows in the "Levels" section
         case .components:
-            return viewModel.wineModelItem?.components.count ?? 0
+            return viewModel.wineModelItem?.components?.count ?? 0
         }
     }
     
@@ -202,7 +219,7 @@ extension WineItemViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "ComponentTableViewCell", for: indexPath) as? ComponentTableViewCell else {
                 fatalError("Unable to dequeue ComponentCell")
             }
-            cell.componentModel = self.viewModel.wineModelItem?.components[indexPath.row]
+            cell.componentModel = self.viewModel.wineModelItem?.components?[indexPath.row]
             return cell
             
         case .none:
@@ -248,7 +265,7 @@ extension WineItemViewController: UITableViewDelegate {
             editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
             headerView.addSubview(editButton)
         } else {
-            let componentsCount = viewModel.wineModelItem?.components.count ?? 0
+            let componentsCount = viewModel.wineModelItem?.components?.count ?? 0
             let countLabel = UILabel(frame: CGRect(x: titleLabel.frame.maxX + 6, y: 0, width: 50, height: 40))
             countLabel.text = "(\(componentsCount))"
             countLabel.textColor = UIColor(hex: "#999999")
