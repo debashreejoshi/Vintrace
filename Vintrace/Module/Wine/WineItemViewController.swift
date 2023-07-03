@@ -29,7 +29,6 @@ class WineItemViewController: UIViewController {
     @IBOutlet weak var editBarButton: UIBarButtonItem!
     
     private let viewModel = WineItemViewModel()
-    var components: [Component] = [Component]()
     
     private enum Constant {
         static let minHeaderHeight: CGFloat = 90
@@ -41,9 +40,9 @@ class WineItemViewController: UIViewController {
         self.bindViewModel()
         viewModel.fetchData(completion: handleFetchResult)
         let appearance = UINavigationBarAppearance()
-            appearance.configureWithTransparentBackground()
-
-            navigationController?.navigationBar.standardAppearance = appearance
+        appearance.configureWithTransparentBackground()
+        
+        navigationController?.navigationBar.standardAppearance = appearance
         
         let tapGestureRecognizer = UITapGestureRecognizer(target:self, action: #selector(Self.somethingWasTapped(_:)))
         self.navigationController?.navigationBar.addGestureRecognizer(tapGestureRecognizer)
@@ -62,7 +61,7 @@ class WineItemViewController: UIViewController {
         self.navigationController?.navigationBar.standardAppearance = appearance
         self.navigationController?.navigationBar.compactAppearance = appearance
         self.navigationController?.navigationBar.scrollEdgeAppearance  = appearance
-
+        
         UIView.animate(withDuration: 0.3) {
             self.headerHeightConstraint.constant = self.shouldShowHeader ? Constant.maxHeaderHeight : Constant.minHeaderHeight
             self.view.layoutIfNeeded()
@@ -80,7 +79,6 @@ class WineItemViewController: UIViewController {
             }
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
-                self?.components = wineModel.components
                 self?.updateUI(with: wineModel)
             }
         }
@@ -97,7 +95,6 @@ class WineItemViewController: UIViewController {
     
     private func handleSuccess(_ wineModel: WineModel) {
         DispatchQueue.main.async {
-            self.components = wineModel.components
             self.updateUI(with: wineModel)
         }
     }
@@ -121,6 +118,9 @@ class WineItemViewController: UIViewController {
         self.beverageDescriptionLabel.text = wineModel.beverageProperties.description
         self.ownerNameLabel.text = wineModel.owner.name
         self.unitNameLabel.text = wineModel.unit.name
+        self.beverageColoredView.layer.cornerRadius = beverageColoredView.bounds.width/2
+        self.beverageColoredView.clipsToBounds = true
+        self.beverageColoredView.backgroundColor = UIColor(hex: "#\(wineModel.beverageProperties.colour)")
     }
 }
 
@@ -131,28 +131,50 @@ extension WineItemViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let section = Section(rawValue: String(section)) else {
+        guard let sectionType = Section(rawValue: section) else {
             return 0
         }
         
-        return viewModel.numberOfRowsInSection(section: section)
+        switch sectionType {
+        case .levels:
+            return 4 // Number of rows in the "Levels" section
+        case .components:
+            return viewModel.wineModelItem?.components.count ?? 0
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch Section(rawValue: String(indexPath.section)) {
-        case .components:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "ComponentTableViewCell", for: indexPath) as? ComponentTableViewCell else {
-                fatalError("Unable to dequeue ComponentCell")
-            }
-            cell.componentModel = self.components[indexPath.row]
-            return cell
-            
+        switch Section(rawValue:indexPath.section) {
         case .levels:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "LevelTableViewCell", for: indexPath) as? LevelTableViewCell else {
                 fatalError("Unable to dequeue LabelCell")
             }
-            //   let label = viewModel.getLabelForRow(at: indexPath)
-            //  cell.configure(with: label)
+            let quantity = viewModel.wineModelItem?.quantity
+            let onHand = quantity?.onHand ?? 0
+            let committed = quantity?.committed ?? 0
+            let ordered = quantity?.ordered ?? 0
+            switch indexPath.row {
+            case 0:
+                cell.configure(with: "On hand", value: onHand)
+            case 1:
+                cell.configure(with: "Committed", value: committed)
+            case 2:
+                cell.configure(with: "In production", value: ordered)
+            case 3:
+                
+                let available = onHand + ordered - committed
+                cell.configure(with: "Available", value: available)
+                cell.quantityNumberLabel.textColor = UIColor(named: "AccentColor")
+            default:
+                break
+            }
+            
+            return cell
+        case .components:
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: "ComponentTableViewCell", for: indexPath) as? ComponentTableViewCell else {
+                fatalError("Unable to dequeue ComponentCell")
+            }
+            cell.componentModel = self.viewModel.wineModelItem?.components[indexPath.row]
             return cell
             
         case .none:
@@ -160,11 +182,6 @@ extension WineItemViewController: UITableViewDataSource {
         }
     }
     
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let sectionType = Section.allSections[section]
-        return sectionType.rawValue
-    }
 }
 
 extension WineItemViewController: UITableViewDelegate {
@@ -174,62 +191,42 @@ extension WineItemViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: CustomHeaderView.reuseIdentifier) as? CustomHeaderView ?? CustomHeaderView(reuseIdentifier: CustomHeaderView.reuseIdentifier)
+        guard let sectionType = Section(rawValue: section) else {
+            return nil
+        }
         
-        let sectionType = Section.allSections[section]
-        headerView.titleLabel.text = sectionType.rawValue
+        return configureHeaderView(for: sectionType)
         
-        if sectionType == .levels {
-            headerView.button.setTitle("Edit", for: .normal)
-        } else {
-            headerView.button.setTitle("No title", for: .normal)
+    }
+    
+    
+    private func configureHeaderView(for section: Section) -> UIView {
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 40))
+        headerView.backgroundColor = .lightGray
+        
+        let titleLabel = UILabel(frame: CGRect(x: 16, y: 0, width: 200, height: 40))
+        titleLabel.text = section == .levels ? "Levels" : "Components"
+        headerView.addSubview(titleLabel)
+        
+        if section == .levels {
+            let editButtonWidth: CGFloat = 60
+            let editButton = UIButton(type: .system)
+            editButton.frame = CGRect(x: headerView.frame.width - editButtonWidth - 16, y: 0, width: editButtonWidth, height: 40)
+            editButton.setTitle("Edit", for: .normal)
+            editButton.setTitleColor(UIColor(named: "AccentColor"), for: .normal)
+            editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
+            headerView.addSubview(editButton)
         }
         
         return headerView
     }
     
+    @objc private func editButtonTapped() {
+        // Handle the edit button tap event for the "Levels" section
+        print("Edit button tapped")
+    }
+    
 }
 
 
-class CustomHeaderView: UITableViewHeaderFooterView {
-    
-    static let reuseIdentifier = "CustomHeaderView"
-    
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 18)
-        label.textColor = .black
-        return label
-    }()
-    
-    let button: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitleColor(.orange, for: .normal)
-        button.addTarget(CustomHeaderView.self, action: #selector(buttonTapped), for: .touchUpInside)
-        return button
-    }()
-    
-    override init(reuseIdentifier: String?) {
-        super.init(reuseIdentifier: reuseIdentifier)
-        setupViews()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setupViews() {
-       
-        contentView.backgroundColor = .lightGray
-        
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(button)
-        
-        // Might need to add layout constraints for titleLabel and button
-        
-    }
-    
-    @objc private func buttonTapped() {
-        // tap action here
-    }
-}
+

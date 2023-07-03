@@ -48,23 +48,15 @@ class WineItemViewModel {
         return nil
     }
     
-    // Provide the number of rows in a given section
-    func numberOfRowsInSection(section: Section) -> Int {
-        switch section {
-        case .components:
-            return componentsCount
-        case .levels:
-            return 4
-        }
-    }
 }
 
 // Enum representing the sections
-enum Section: String {
-    case components = "Components"
-    case levels = "Levels"
+enum Section: Int {
+    case levels = 0
+    case components = 1
     
     static let allSections: [Section] = [.levels, .components]
+        
 }
 
 // Error enum for data loading

@@ -28,7 +28,7 @@ class ComponentTableViewCell: UITableViewCell {
         
         self.componentCodeLabel.text = componentModel?.code
         self.componentDescriptionLabel.text = componentModel?.description
-        self.componentQuantityLabel.text = "\(componentModel?.quantity)"
+        self.componentQuantityLabel.text = "\(componentModel?.quantity ?? 0)"
     }
     
     

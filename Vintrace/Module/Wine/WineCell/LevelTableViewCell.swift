@@ -13,21 +13,16 @@ class LevelTableViewCell: UITableViewCell {
     @IBOutlet weak var quantityDescriptionLabel: UILabel!
     @IBOutlet weak var quantityNumberLabel: UILabel!
     
-    var componentModel: Component? {
-        didSet {
-            self.configureCell()
-        }
-    }
-
+    
     override func awakeFromNib() {
         super.awakeFromNib()
     }
     
-    private func configureCell() {
+    func configure(with key: String, value: Int) {
         
-        self.quantityNumberLabel.text = componentModel?.code
-        self.quantityDescriptionLabel.text = componentModel?.description
-       // self.componentQuantityLabel.text = "\(componentModel?.quantity)"
+        self.quantityDescriptionLabel.text = key
+        self.quantityNumberLabel.text = "\(value)"
+      
     }
     
 }
