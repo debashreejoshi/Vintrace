@@ -205,6 +205,12 @@ extension WineItemViewController: UITableViewDelegate {
             editButton.setTitleColor(UIColor(named: "AccentColor"), for: .normal)
             editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
             headerView.addSubview(editButton)
+        } else {
+            let componentsCount = viewModel.wineModelItem?.components.count ?? 0
+            let countLabel = UILabel(frame: CGRect(x: titleLabel.frame.maxX + 6, y: 0, width: 50, height: 40))
+            countLabel.text = "(\(componentsCount))"
+            countLabel.textColor = UIColor(hex: "#999999")
+            headerView.addSubview(countLabel)
         }
         
         return headerView
