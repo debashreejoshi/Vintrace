@@ -25,6 +25,7 @@
 		B88AE5422A4E6488005C996A /* VintraceUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88AE5412A4E6488005C996A /* VintraceUITests.swift */; };
 		B88AE5442A4E6488005C996A /* VintraceUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88AE5432A4E6488005C996A /* VintraceUITestsLaunchTests.swift */; };
 		B8E60C1E2A53C08600A0FE7C /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E60C1D2A53C08600A0FE7C /* UIViewController+Extension.swift */; };
+		B8E60C202A53DF2500A0FE7C /* StockItemViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E60C1F2A53DF2500A0FE7C /* StockItemViewControllerTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		B88AE5412A4E6488005C996A /* VintraceUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VintraceUITests.swift; sourceTree = "<group>"; };
 		B88AE5432A4E6488005C996A /* VintraceUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VintraceUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		B8E60C1D2A53C08600A0FE7C /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
+		B8E60C1F2A53DF2500A0FE7C /* StockItemViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockItemViewControllerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				B88AE5372A4E6487005C996A /* VintraceTests.swift */,
+				B8E60C1F2A53DF2500A0FE7C /* StockItemViewControllerTests.swift */,
 			);
 			path = VintraceTests;
 			sourceTree = "<group>";
@@ -360,6 +363,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B8E60C202A53DF2500A0FE7C /* StockItemViewControllerTests.swift in Sources */,
 				B88AE5382A4E6487005C996A /* VintraceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

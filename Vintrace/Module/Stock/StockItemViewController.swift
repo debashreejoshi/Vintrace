@@ -28,12 +28,12 @@ class StockItemViewController: UIViewController {
     @IBOutlet weak var beveragePropertiesStackView: UIStackView!
     @IBOutlet weak var imageCountLabel: UILabel!
     
-    private let viewModel = StockItemViewModel()
+    var viewModel = StockItemViewModel()
     
     private let imageNames: [String] = ["wine-1", "wine-2", "wine-3", "wine-4"]
-    private var images: [UIImage] = []
+    var images: [UIImage] = []
     private let genericImageName = "generic-1"
-    private var currentImageIndex: Int = 0
+    var currentImageIndex: Int = 0
     
     private enum Constant {
         static let minHeaderHeight: CGFloat = 90
@@ -63,7 +63,7 @@ class StockItemViewController: UIViewController {
         return .lightContent
     }
     
-    private func configureUI() {
+    func configureUI() {
         tableView.backgroundColor = UIColor(hex: "#F7F7F7")
         headerView.layer.cornerRadius = 32
         headerView.clipsToBounds = true
@@ -80,14 +80,14 @@ class StockItemViewController: UIViewController {
         self.updateImageCountLabel()
     }
     
-    private func updateImageCountLabel() {
+    func updateImageCountLabel() {
         self.imageCountLabel.layer.cornerRadius = 8
         self.imageCountLabel.clipsToBounds = true
         self.imageCountLabel.text = "\(currentImageIndex + 1)/\(images.count)"
     }
-   
     
-    private func fetchData() {
+    
+    func fetchData() {
         viewModel.fetchData { [weak self] result in
             switch result {
             case .success(let stock):
@@ -98,13 +98,13 @@ class StockItemViewController: UIViewController {
         }
     }
     
-    private func handleSuccess(_ stock: Stock) {
+    func handleSuccess(_ stock: Stock) {
         DispatchQueue.main.async {
             self.updateUI(with: stock)
         }
     }
     
-    private func handleError(_ error: Error) {
+    func handleError(_ error: Error) {
         DispatchQueue.main.async {
             print("Error: \(error.localizedDescription)")
             // Show error message to the user or take appropriate action
@@ -295,7 +295,6 @@ extension StockItemViewController: UITableViewDelegate {
         return configureHeaderView(for: sectionType)
         
     }
-    
     
     private func configureHeaderView(for section: Section) -> UIView {
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 40))
