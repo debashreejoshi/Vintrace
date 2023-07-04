@@ -26,12 +26,14 @@ class StockItemViewController: UIViewController {
     @IBOutlet weak var moreBarButton: UIBarButtonItem!
     @IBOutlet weak var editBarButton: UIBarButtonItem!
     @IBOutlet weak var beveragePropertiesStackView: UIStackView!
+    @IBOutlet weak var imageCountLabel: UILabel!
     
     private let viewModel = StockItemViewModel()
     
     private let imageNames: [String] = ["wine-1", "wine-2", "wine-3", "wine-4"]
     private var images: [UIImage] = []
     private let genericImageName = "generic-1"
+    private var currentImageIndex: Int = 0
     
     private enum Constant {
         static let minHeaderHeight: CGFloat = 90
@@ -74,7 +76,16 @@ class StockItemViewController: UIViewController {
         if images.isEmpty, let image = UIImage(named: genericImageName) {
             images.append(image)
         }
+        
+        self.updateImageCountLabel()
     }
+    
+    private func updateImageCountLabel() {
+        self.imageCountLabel.layer.cornerRadius = 8
+        self.imageCountLabel.clipsToBounds = true
+        self.imageCountLabel.text = "\(currentImageIndex + 1)/\(images.count)"
+    }
+   
     
     private func fetchData() {
         viewModel.fetchData { [weak self] result in
@@ -167,6 +178,7 @@ class StockItemViewController: UIViewController {
         carouselView.isPagingEnabled = true
         carouselView.showsHorizontalScrollIndicator = false
         carouselView.contentSize = CGSize(width: carouselView.frame.width * CGFloat(images.count), height: carouselView.frame.height)
+        carouselView.delegate = self
         
         let content = UIView(frame: CGRect(origin: .zero, size: CGSize(width: carouselView.frame.width * CGFloat(images.count), height: carouselView.frame.height)))
         for (index, image) in images.enumerated() {
@@ -187,6 +199,14 @@ class StockItemViewController: UIViewController {
         self.present(vc, animated: true)
     }
     
+}
+
+extension StockItemViewController: UIScrollViewDelegate {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        // Calculate the current index based on the content offset
+        currentImageIndex = Int(scrollView.contentOffset.x / scrollView.frame.size.width)
+        updateImageCountLabel()
+    }
 }
 
 extension StockItemViewController: UITableViewDataSource {

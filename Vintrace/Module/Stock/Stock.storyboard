@@ -22,7 +22,7 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="StockItemViewController" customModule="Vintrace" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="8bC-Xf-vdC">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="1116"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -43,6 +43,17 @@
                                                             <constraint firstAttribute="height" constant="348" id="fxm-aP-4lm"/>
                                                         </constraints>
                                                     </view>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4/4" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Pi-el-Edw">
+                                                        <rect key="frame" x="401" y="310" width="37" height="26"/>
+                                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="26" id="auD-Y6-ztI"/>
+                                                            <constraint firstAttribute="width" constant="37" id="maG-TJ-NAS"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="12"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qPd-NI-wr5" userLabel="BeverageInfoView">
                                                         <rect key="frame" x="24" y="348" width="430" height="227"/>
                                                         <subviews>
@@ -149,11 +160,13 @@
                                                 <constraints>
                                                     <constraint firstAttribute="bottom" secondItem="qPd-NI-wr5" secondAttribute="bottom" id="Cnj-O5-pLy"/>
                                                     <constraint firstAttribute="trailing" secondItem="qPd-NI-wr5" secondAttribute="trailing" id="EdY-cv-HdY"/>
+                                                    <constraint firstAttribute="trailing" secondItem="3Pi-el-Edw" secondAttribute="trailing" constant="16" id="MJy-tZ-Tk6"/>
                                                     <constraint firstAttribute="height" constant="575" id="MwL-lB-Z0Y"/>
                                                     <constraint firstAttribute="trailing" secondItem="fpj-H4-8Yb" secondAttribute="trailing" id="QpF-P7-gdS"/>
                                                     <constraint firstItem="fpj-H4-8Yb" firstAttribute="top" secondItem="vYb-Qj-afm" secondAttribute="top" id="Zss-Hs-OxH"/>
                                                     <constraint firstItem="fpj-H4-8Yb" firstAttribute="leading" secondItem="vYb-Qj-afm" secondAttribute="leading" id="hNC-9e-WCn"/>
                                                     <constraint firstItem="qPd-NI-wr5" firstAttribute="top" secondItem="fpj-H4-8Yb" secondAttribute="bottom" id="l9V-Bi-3h7"/>
+                                                    <constraint firstItem="qPd-NI-wr5" firstAttribute="top" secondItem="3Pi-el-Edw" secondAttribute="bottom" constant="12" id="mAN-vk-4CP"/>
                                                     <constraint firstItem="qPd-NI-wr5" firstAttribute="leading" secondItem="vYb-Qj-afm" secondAttribute="leading" constant="24" id="txx-nQ-PFQ"/>
                                                 </constraints>
                                             </view>
@@ -357,6 +370,7 @@
                         <outlet property="editBarButton" destination="RAB-hv-cmL" id="F3K-Ei-y4l"/>
                         <outlet property="headerHeightConstraint" destination="MwL-lB-Z0Y" id="gbU-vD-iH2"/>
                         <outlet property="headerView" destination="tVD-Dq-Q9D" id="Ubi-sh-j57"/>
+                        <outlet property="imageCountLabel" destination="3Pi-el-Edw" id="tZK-5i-8r0"/>
                         <outlet property="moreBarButton" destination="3W5-Up-Mop" id="IVB-Cx-zOY"/>
                         <outlet property="ownerNameLabel" destination="3nC-Ie-ttl" id="zqw-iL-hei"/>
                         <outlet property="secondaryDescriptionLabel" destination="G6K-2g-tFm" id="9ka-jr-SUg"/>
