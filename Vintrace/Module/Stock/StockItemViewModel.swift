@@ -1,5 +1,5 @@
 //
-//  WineItemViewModel.swift
+//  StockItemViewModel.swift
 //  Vintrace
 //
 //  Created by Debashree Joshi on 30/6/2023.
@@ -7,14 +7,14 @@
 
 import Foundation
 
-class WineItemViewModel {
+class StockItemViewModel {
     
-    var wineModelItem: WineModel?
+    var stockItem: Stock?
     var sections: [Section] = []
     private var componentsCount: Int = 0
         
     // Fetch the JSON data and parse it into StockItem objects
-    func fetchData(completion: @escaping (Result<WineModel, Error>) -> Void) {
+    func fetchData(completion: @escaping (Result<Stock, Error>) -> Void) {
         guard let jsonData = readJSONFromFile() else {
             completion(.failure(DataLoadingError.fileNotFound))
             return
@@ -22,9 +22,9 @@ class WineItemViewModel {
         
         do {
             let decoder = JSONDecoder()
-            let decodedData = try decoder.decode(WineModel.self, from: jsonData)
-            wineModelItem = decodedData
-            self.componentsCount = wineModelItem?.components?.count ?? 0
+            let decodedData = try decoder.decode(Stock.self, from: jsonData)
+            stockItem = decodedData
+            self.componentsCount = stockItem?.components?.count ?? 0
             sections = componentsCount > 0 ? [.levels, .components] : [.levels]
             completion(.success(decodedData))
         } catch {

@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  StockItemViewController.swift
 //  Vintrace
 //
 //  Created by Debashree Joshi on 30/6/2023.
@@ -8,11 +8,9 @@
 import UIKit
 import SafariServices
 
-class WineItemViewController: UIViewController {
+class StockItemViewController: UIViewController {
     
-    @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var carouselView: UIView!
-    @IBOutlet weak var wineImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var secondaryDescriptionLabel: UILabel!
@@ -23,6 +21,7 @@ class WineItemViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var headerHeightConstraint: NSLayoutConstraint!
+   
     @IBOutlet weak var backBarButton: UIBarButtonItem!
     @IBOutlet weak var moreBarButton: UIBarButtonItem!
     @IBOutlet weak var editBarButton: UIBarButtonItem!
@@ -31,7 +30,7 @@ class WineItemViewController: UIViewController {
     
     var shouldShowHeader: Bool = true
     
-    private let viewModel = WineItemViewModel()
+    private let viewModel = StockItemViewModel()
     
     let imageNames: [String] = ["wine-1", "wine-2", "wine-3", "wine-4"]
     // Create an empty array to store the images
@@ -49,7 +48,7 @@ class WineItemViewController: UIViewController {
         self.viewModel.fetchData(completion: handleFetchResult)
         self.headerView.layer.cornerRadius = 32
         self.headerView.clipsToBounds = true
-        self.headerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(Self.somethingWasTapped(_:))))
+        self.headerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(Self.headerViewTapped(_:))))
         
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
@@ -58,7 +57,7 @@ class WineItemViewController: UIViewController {
         navigationController?.navigationBar.compactAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance  = appearance
         
-        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action: #selector(Self.somethingWasTapped(_:)))
+        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action: #selector(Self.headerViewTapped(_:)))
         self.navigationController?.navigationBar.addGestureRecognizer(tapGestureRecognizer)
         
         // Iterate over the image names and create UIImage objects
@@ -77,7 +76,7 @@ class WineItemViewController: UIViewController {
         setupCarousel()
     }
     
-    @objc func somethingWasTapped(_ sth: AnyObject){
+    @objc func headerViewTapped(_ sth: AnyObject){
         shouldShowHeader.toggle()
         let appearance = UINavigationBarAppearance()
         if shouldShowHeader {
@@ -101,18 +100,18 @@ class WineItemViewController: UIViewController {
         self.editBarButton.image = shouldShowHeader ? UIImage(named: "EDIT") : UIImage(named: "edit_clear")
     }
     
-    private func handleFetchResult(_ result: Result<WineModel, Error>) {
+    private func handleFetchResult(_ result: Result<Stock, Error>) {
         switch result {
-        case .success(let wineModel):
-            handleSuccess(wineModel)
+        case .success(let stock):
+            handleSuccess(stock)
         case .failure(let error):
             handleError(error)
         }
     }
     
-    private func handleSuccess(_ wineModel: WineModel) {
+    private func handleSuccess(_ stock: Stock) {
         DispatchQueue.main.async {
-            self.updateUI(with: wineModel)
+            self.updateUI(with: stock)
         }
     }
     
@@ -128,19 +127,19 @@ class WineItemViewController: UIViewController {
         }
     }
     
-    private func updateUI(with wineModel: WineModel) {
-        self.titleLabel.text = wineModel.code
-        self.descriptionLabel.text = wineModel.description
-        self.secondaryDescriptionLabel.text = wineModel.secondaryDescription
-        self.secondaryDescriptionLabel.isHidden = wineModel.secondaryDescription == nil
-        self.ownerNameLabel.text = wineModel.owner?.name
-        self.unitNameLabel.text = wineModel.unit?.name
-        self.configureBeverageProperties(with: wineModel)
+    private func updateUI(with stock: Stock) {
+        self.titleLabel.text = stock.code
+        self.descriptionLabel.text = stock.description
+        self.secondaryDescriptionLabel.text = stock.secondaryDescription
+        self.secondaryDescriptionLabel.isHidden = stock.secondaryDescription == nil
+        self.ownerNameLabel.text = stock.owner?.name
+        self.unitNameLabel.text = stock.unit?.name
+        self.configureBeverageProperties(with: stock)
     }
     
-    private func configureBeverageProperties(with wineModel: WineModel) {
+    private func configureBeverageProperties(with stock: Stock) {
         
-        if let beverageProperties = self.viewModel.wineModelItem?.beverageProperties {
+        if let beverageProperties = self.viewModel.stockItem?.beverageProperties {
             self.beverageColoredView.layer.cornerRadius = beverageColoredView.bounds.width/2
             self.beverageColoredView.clipsToBounds = true
             self.beverageColoredView.backgroundColor = UIColor(hex: "#\(beverageProperties.colour ?? "")")
@@ -184,7 +183,7 @@ class WineItemViewController: UIViewController {
     
 }
 
-extension WineItemViewController: UITableViewDataSource {
+extension StockItemViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.sections.count
@@ -197,9 +196,9 @@ extension WineItemViewController: UITableViewDataSource {
         
         switch sectionType {
         case .levels:
-            return 4 
+            return 4
         case .components:
-            return viewModel.wineModelItem?.components?.count ?? 0
+            return viewModel.stockItem?.components?.count ?? 0
         }
     }
     
@@ -209,7 +208,7 @@ extension WineItemViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "LevelTableViewCell", for: indexPath) as? LevelTableViewCell else {
                 fatalError("Unable to dequeue LabelCell")
             }
-            let quantity = viewModel.wineModelItem?.quantity
+            let quantity = viewModel.stockItem?.quantity
             let onHand = quantity?.onHand ?? 0
             let committed = quantity?.committed ?? 0
             let ordered = quantity?.ordered ?? 0
@@ -234,7 +233,7 @@ extension WineItemViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "ComponentTableViewCell", for: indexPath) as? ComponentTableViewCell else {
                 fatalError("Unable to dequeue ComponentCell")
             }
-            cell.componentModel = self.viewModel.wineModelItem?.components?[indexPath.row]
+            cell.componentModel = self.viewModel.stockItem?.components?[indexPath.row]
             return cell
             
         case .none:
@@ -247,7 +246,7 @@ extension WineItemViewController: UITableViewDataSource {
     }
 }
 
-extension WineItemViewController: UITableViewDelegate {
+extension StockItemViewController: UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -267,21 +266,23 @@ extension WineItemViewController: UITableViewDelegate {
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 40))
         headerView.backgroundColor = UIColor(hex: "#F7F7F7")
         
-        let titleLabel = UILabel(frame: CGRect(x: 16, y: 0, width: 200, height: 40))
+        let titleLabel = UILabel(frame: CGRect(x: 16, y: 0, width: 100, height: 40))
+        titleLabel.font = UIFont(name: "Montserrat", size: 17)
         titleLabel.text = section == .levels ? "Levels" : "Components"
         headerView.addSubview(titleLabel)
         
         if section == .levels {
             let editButtonWidth: CGFloat = 60
             let editButton = UIButton(type: .system)
-            editButton.frame = CGRect(x: headerView.frame.width - editButtonWidth - 16, y: 0, width: editButtonWidth, height: 40)
+            editButton.frame = CGRect(x: headerView.frame.width - editButtonWidth - 40, y: 0, width: editButtonWidth, height: 40)
             editButton.setTitle("Edit", for: .normal)
+            editButton.titleLabel?.font =  UIFont(name: "Montserrat", size: 14)
             editButton.setTitleColor(UIColor(named: "AccentColor"), for: .normal)
             editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
             headerView.addSubview(editButton)
         } else {
-            let componentsCount = viewModel.wineModelItem?.components?.count ?? 0
-            let countLabel = UILabel(frame: CGRect(x: titleLabel.frame.maxX + 6, y: 0, width: 50, height: 40))
+            let componentsCount = viewModel.stockItem?.components?.count ?? 0
+            let countLabel = UILabel(frame: CGRect(x: titleLabel.frame.maxX + 0, y: 0, width: 50, height: 40))
             countLabel.text = "(\(componentsCount))"
             countLabel.textColor = UIColor(hex: "#999999")
             headerView.addSubview(countLabel)

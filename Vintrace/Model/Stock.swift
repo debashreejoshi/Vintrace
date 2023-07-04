@@ -1,5 +1,5 @@
 //
-//  WineModel.swift
+//  Stock.swift
 //  Vintrace
 //
 //  Created by Debashree Joshi on 30/6/2023.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct WineModel: Codable {
+struct Stock: Codable {
     let id: Int?
     let code: String?
     let description: String?
