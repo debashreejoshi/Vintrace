@@ -21,91 +21,69 @@ class StockItemViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var headerHeightConstraint: NSLayoutConstraint!
-   
+    
     @IBOutlet weak var backBarButton: UIBarButtonItem!
     @IBOutlet weak var moreBarButton: UIBarButtonItem!
     @IBOutlet weak var editBarButton: UIBarButtonItem!
     @IBOutlet weak var beveragePropertiesStackView: UIStackView!
     
-    
-    var shouldShowHeader: Bool = true
-    
     private let viewModel = StockItemViewModel()
     
-    let imageNames: [String] = ["wine-1", "wine-2", "wine-3", "wine-4"]
-    // Create an empty array to store the images
-    var images: [UIImage] = []
-    let genericImageName = "generic-1"
+    private let imageNames: [String] = ["wine-1", "wine-2", "wine-3", "wine-4"]
+    private var images: [UIImage] = []
+    private let genericImageName = "generic-1"
     
     private enum Constant {
         static let minHeaderHeight: CGFloat = 90
         static let maxHeaderHeight: CGFloat = 574
     }
     
+    var shouldShowHeader: Bool = true {
+        didSet {
+            configureNavigationBarAppearance()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.tableView.backgroundColor = UIColor(hex: "#F7F7F7")
-        self.viewModel.fetchData(completion: handleFetchResult)
-        self.headerView.layer.cornerRadius = 32
-        self.headerView.clipsToBounds = true
-        self.headerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(Self.headerViewTapped(_:))))
+        self.configureUI()
+        self.fetchData()
+        self.setupCarousel()
         
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithTransparentBackground()
-        
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance  = appearance
-        
-        let tapGestureRecognizer = UITapGestureRecognizer(target:self, action: #selector(Self.headerViewTapped(_:)))
-        self.navigationController?.navigationBar.addGestureRecognizer(tapGestureRecognizer)
-        
-        // Iterate over the image names and create UIImage objects
-        for imageName in imageNames {
-            if let image = UIImage(named: imageName) {
-                images.append(image)
-            }
-        }
-        if images.isEmpty {
-            if let image = UIImage(named: genericImageName) {
-                images.append(image)
-            }
-        }
-        
-        // Call the method to setup the carousel with the images
-        setupCarousel()
     }
     
-    @objc func headerViewTapped(_ sth: AnyObject){
-        shouldShowHeader.toggle()
-        let appearance = UINavigationBarAppearance()
-        if shouldShowHeader {
-            appearance.configureWithTransparentBackground()
-            
-        } else {
-            appearance.configureWithDefaultBackground()
-            appearance.backgroundColor = UIColor(named: "AccentColor")
-        }
-        self.navigationController?.navigationBar.standardAppearance = appearance
-        self.navigationController?.navigationBar.compactAppearance = appearance
-        self.navigationController?.navigationBar.scrollEdgeAppearance  = appearance
-        
-        UIView.animate(withDuration: 0.3) {
-            self.headerHeightConstraint.constant = self.shouldShowHeader ? Constant.maxHeaderHeight : Constant.minHeaderHeight
-            self.view.layoutIfNeeded()
-        }
-        
-        self.backBarButton.image = shouldShowHeader ? UIImage(named: "BACK") : UIImage(named: "back_clear")
-        self.moreBarButton.image = shouldShowHeader ? UIImage(named: "MORE") : UIImage(named: "more_clear")
-        self.editBarButton.image = shouldShowHeader ? UIImage(named: "EDIT") : UIImage(named: "edit_clear")
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureNavigationBarAppearance()
     }
     
-    private func handleFetchResult(_ result: Result<Stock, Error>) {
-        switch result {
-        case .success(let stock):
-            handleSuccess(stock)
-        case .failure(let error):
-            handleError(error)
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
+    private func configureUI() {
+        tableView.backgroundColor = UIColor(hex: "#F7F7F7")
+        headerView.layer.cornerRadius = 32
+        headerView.clipsToBounds = true
+        headerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(headerViewTapped(_:))))
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(headerViewTapped(_:)))
+        navigationController?.navigationBar.addGestureRecognizer(tapGestureRecognizer)
+        
+        images = imageNames.compactMap { UIImage(named: $0) }
+        if images.isEmpty, let image = UIImage(named: genericImageName) {
+            images.append(image)
+        }
+    }
+    
+    private func fetchData() {
+        viewModel.fetchData { [weak self] result in
+            switch result {
+            case .success(let stock):
+                self?.handleSuccess(stock)
+            case .failure(let error):
+                self?.handleError(error)
+            }
         }
     }
     
@@ -119,12 +97,40 @@ class StockItemViewController: UIViewController {
         DispatchQueue.main.async {
             print("Error: \(error.localizedDescription)")
             // Show error message to the user or take appropriate action
-            
-            let alertController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alertController.addAction(okAction)
-            self.present(alertController, animated: true, completion: nil)
+            self.showAlert(title: "Error", message: error.localizedDescription)
         }
+    }
+    
+    @objc func headerViewTapped(_ sth: AnyObject){
+        shouldShowHeader.toggle()
+        configureNavigationBarAppearance()
+    }
+    
+    private func configureNavigationBarAppearance() {
+        let appearance = UINavigationBarAppearance()
+        
+        if shouldShowHeader {
+            appearance.configureWithTransparentBackground()
+            navigationItem.title = ""
+        } else {
+            appearance.configureWithDefaultBackground()
+            navigationItem.title = viewModel.stockItem?.code
+            
+            appearance.backgroundColor =  UIColor(named: "AccentColor")
+        }
+        appearance.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance  = appearance
+        
+        UIView.animate(withDuration: 0.3) {
+            self.headerHeightConstraint.constant = self.shouldShowHeader ? Constant.maxHeaderHeight : Constant.minHeaderHeight
+            self.view.layoutIfNeeded()
+        }
+        
+        backBarButton.image = shouldShowHeader ? UIImage(named: "BACK") : UIImage(named: "back_clear")
+        moreBarButton.image = shouldShowHeader ? UIImage(named: "MORE") : UIImage(named: "more_clear")
+        editBarButton.image = shouldShowHeader ? UIImage(named: "EDIT") : UIImage(named: "edit_clear")
     }
     
     private func updateUI(with stock: Stock) {
@@ -208,10 +214,12 @@ extension StockItemViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "LevelTableViewCell", for: indexPath) as? LevelTableViewCell else {
                 fatalError("Unable to dequeue LabelCell")
             }
+            
             let quantity = viewModel.stockItem?.quantity
             let onHand = quantity?.onHand ?? 0
             let committed = quantity?.committed ?? 0
             let ordered = quantity?.ordered ?? 0
+            
             switch indexPath.row {
             case 0:
                 cell.configure(with: "On hand", value: onHand)
@@ -220,7 +228,6 @@ extension StockItemViewController: UITableViewDataSource {
             case 2:
                 cell.configure(with: "In production", value: ordered)
             case 3:
-                
                 let available = onHand + ordered - committed
                 cell.configure(with: "Available", value: available)
                 cell.quantityNumberLabel.textColor = available == 0 ? .black : available > 0 ? UIColor(named: "AccentColor") : .red
@@ -249,7 +256,15 @@ extension StockItemViewController: UITableViewDataSource {
 extension StockItemViewController: UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        guard let sectionType = Section(rawValue: indexPath.section) else {
+            return
+        }
+        switch sectionType {
+        case .components:
+            self.showAlert(title: "Component Selected", message: "You selected a component: \(indexPath.row + 1)")
+        default:
+            break
+        }
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -292,13 +307,10 @@ extension StockItemViewController: UITableViewDelegate {
     }
     
     @objc private func editButtonTapped() {
-        // Handle the edit button tap event for the "Levels" section
-        print("Edit button tapped")
-        let alertController = UIAlertController(title: "Edit", message: "This is edit button alert", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
-        self.present(alertController, animated: true)
+        self.showAlert(title: "Edit", message: "This is edit button alert")
     }
 }
+
 
 
 

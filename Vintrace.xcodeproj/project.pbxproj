@@ -24,6 +24,7 @@
 		B88AE5382A4E6487005C996A /* VintraceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88AE5372A4E6487005C996A /* VintraceTests.swift */; };
 		B88AE5422A4E6488005C996A /* VintraceUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88AE5412A4E6488005C996A /* VintraceUITests.swift */; };
 		B88AE5442A4E6488005C996A /* VintraceUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88AE5432A4E6488005C996A /* VintraceUITestsLaunchTests.swift */; };
+		B8E60C1E2A53C08600A0FE7C /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8E60C1D2A53C08600A0FE7C /* UIViewController+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		B88AE53D2A4E6487005C996A /* VintraceUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VintraceUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B88AE5412A4E6488005C996A /* VintraceUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VintraceUITests.swift; sourceTree = "<group>"; };
 		B88AE5432A4E6488005C996A /* VintraceUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VintraceUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		B8E60C1D2A53C08600A0FE7C /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				B84E494C2A52A01F00B494A6 /* UIColor+Extension.swift */,
+				B8E60C1D2A53C08600A0FE7C /* UIViewController+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -164,7 +167,7 @@
 		B88AE51F2A4E6486005C996A /* Vintrace */ = {
 			isa = PBXGroup;
 			children = (
-				B873BDF02A5398DF00295E03 /* Montserrat */,
+				B8E60C1C2A53AE3100A0FE7C /* Font */,
 				B84E494E2A52A02400B494A6 /* Extension */,
 				B81036682A4ECE0B009CD1A9 /* Core */,
 				B81036692A4ECE54009CD1A9 /* Module */,
@@ -197,6 +200,14 @@
 				B810365F2A4EBC2C009CD1A9 /* Stock.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		B8E60C1C2A53AE3100A0FE7C /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				B873BDF02A5398DF00295E03 /* Montserrat */,
+			);
+			path = Font;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -337,6 +348,7 @@
 				B81036662A4EC7F0009CD1A9 /* StockItemViewModel.swift in Sources */,
 				B88AE5212A4E6486005C996A /* AppDelegate.swift in Sources */,
 				B81036622A4EC1C9009CD1A9 /* LevelTableViewCell.swift in Sources */,
+				B8E60C1E2A53C08600A0FE7C /* UIViewController+Extension.swift in Sources */,
 				B81036602A4EBC2C009CD1A9 /* Stock.swift in Sources */,
 				B88AE5232A4E6486005C996A /* SceneDelegate.swift in Sources */,
 				B81036642A4EC1E1009CD1A9 /* ComponentTableViewCell.swift in Sources */,
