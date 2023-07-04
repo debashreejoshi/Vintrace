@@ -24,8 +24,6 @@ class ComponentTableViewCell: UITableViewCell {
         
     }
     
-    
-
     private func configureCell() {
         
         self.componentCodeLabel.text = componentModel?.code

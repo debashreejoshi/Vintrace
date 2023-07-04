@@ -64,14 +64,19 @@ class StockItemViewController: UIViewController {
     }
     
     func configureUI() {
+        // Configure table view background color
         tableView.backgroundColor = UIColor(hex: "#F7F7F7")
+        
+        // Configure header view appearance
         headerView.layer.cornerRadius = 32
         headerView.clipsToBounds = true
         headerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(headerViewTapped(_:))))
         
+        // Configure navigation bar tap gesture recognizer
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(headerViewTapped(_:)))
         navigationController?.navigationBar.addGestureRecognizer(tapGestureRecognizer)
         
+        // Load carousel images
         images = imageNames.compactMap { UIImage(named: $0) }
         if images.isEmpty, let image = UIImage(named: genericImageName) {
             images.append(image)
@@ -86,6 +91,7 @@ class StockItemViewController: UIViewController {
         self.imageCountLabel.text = "\(currentImageIndex + 1)/\(images.count)"
     }
     
+    // MARK: - Data Fetching
     
     func fetchData() {
         viewModel.fetchData { [weak self] result in
@@ -107,12 +113,13 @@ class StockItemViewController: UIViewController {
     func handleError(_ error: Error) {
         DispatchQueue.main.async {
             print("Error: \(error.localizedDescription)")
-            // Show error message to the user or take appropriate action
+            // Show error message to the user
             self.showAlert(title: "Error", message: error.localizedDescription)
         }
     }
     
     @objc func headerViewTapped(_ sth: AnyObject){
+        // Expand or collapse header view
         shouldShowHeader.toggle()
         configureNavigationBarAppearance()
     }
@@ -145,6 +152,7 @@ class StockItemViewController: UIViewController {
     }
     
     private func updateUI(with stock: Stock) {
+        // Update UI with stock data
         self.titleLabel.text = stock.code
         self.descriptionLabel.text = stock.description
         self.secondaryDescriptionLabel.text = stock.secondaryDescription
@@ -155,12 +163,11 @@ class StockItemViewController: UIViewController {
     }
     
     private func configureBeverageProperties(with stock: Stock) {
-        
+        // Hide beverage properties stack view if there is no description
         if let beverageProperties = self.viewModel.stockItem?.beverageProperties {
             self.beverageColoredView.layer.cornerRadius = beverageColoredView.bounds.width/2
             self.beverageColoredView.clipsToBounds = true
             self.beverageColoredView.backgroundColor = UIColor(hex: "#\(beverageProperties.colour ?? "")")
-            self.beverageDescriptionLabel.text = beverageProperties.description
             self.beverageDescriptionLabel.text = beverageProperties.description
             
             // Show the stack view

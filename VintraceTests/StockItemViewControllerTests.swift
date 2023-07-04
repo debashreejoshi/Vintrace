@@ -33,7 +33,6 @@ final class StockItemViewControllerTests: XCTestCase {
         XCTAssertNotNil(viewController?.carouselView)
         XCTAssertNotNil(viewController?.titleLabel)
         XCTAssertNotNil(viewController?.descriptionLabel)
-        // Add additional assertions based on your UI elements
         
         // Call the method under test
         viewController?.configureUI()
@@ -74,7 +73,6 @@ final class StockItemViewControllerTests: XCTestCase {
         
         // Assert the changes made to shouldShowHeader and the navigation bar
         XCTAssertTrue(viewController?.shouldShowHeader ?? false)
-        // Add assertions to check the changes in the navigation bar appearance and buttons
     }
     
     func testFetchData_HandleSuccess() {
