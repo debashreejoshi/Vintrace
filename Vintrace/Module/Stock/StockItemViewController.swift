@@ -294,7 +294,7 @@ extension StockItemViewController: UITableViewDelegate {
     @objc private func editButtonTapped() {
         // Handle the edit button tap event for the "Levels" section
         print("Edit button tapped")
-        let alertController = UIAlertController(title: "Edit", message: "this is something", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Edit", message: "This is edit button alert", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .cancel))
         self.present(alertController, animated: true)
     }
