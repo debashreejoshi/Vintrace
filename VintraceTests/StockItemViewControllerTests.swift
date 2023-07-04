@@ -88,7 +88,6 @@ final class StockItemViewControllerTests: XCTestCase {
         // Assert that the UI is updated correctly with the expected stock
         XCTAssertEqual(viewController?.titleLabel.text, expectedStock.code)
         XCTAssertEqual(viewController?.descriptionLabel.text, expectedStock.description)
-        // Add more assertions as needed
     }
     
 }

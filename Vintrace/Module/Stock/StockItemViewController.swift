@@ -76,7 +76,7 @@ class StockItemViewController: UIViewController {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(headerViewTapped(_:)))
         navigationController?.navigationBar.addGestureRecognizer(tapGestureRecognizer)
         
-        // Load carousel images
+        // Load an array of UIImage objects from an array of image names using compactMap to remove any nil values
         images = imageNames.compactMap { UIImage(named: $0) }
         if images.isEmpty, let image = UIImage(named: genericImageName) {
             images.append(image)
